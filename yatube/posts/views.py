@@ -1,4 +1,3 @@
-from django.core import paginator
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
@@ -107,14 +106,16 @@ def add_comment(request, post_id, username):
                'post': post}
     return render(request, 'comments.html', context)
 
+
 @login_required
 def follow_index(request):
     user = request.user
     post_list = Post.objects.filter(author__following__user=user)
-    paginator  = Paginator(post_list, settings.POSTS_PER_PAGE)
+    paginator = Paginator(post_list, settings.POSTS_PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, 'follow.html', {'page': page})
+
 
 @login_required
 def profile_follow(request, username):
@@ -123,6 +124,7 @@ def profile_follow(request, username):
     if author != request.user:
         Follow.objects.get_or_create(author=author, user=user)
     return redirect('profile', username=username)
+
 
 @login_required
 def profile_unfollow(request, username):
