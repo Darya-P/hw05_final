@@ -194,19 +194,14 @@ class PostCreateFormTests(TestCase):
         self.assertEqual(len(response.context['page']), 0)
 
     def test_only_auth_user_comment(self):
-        response = self.authorized_client2.get(reverse('add_comment', 
-                                                       kwargs={'username': self.user,
-                                                               'post_id': self.post.id}))
+        response = self.authorized_client2.get(
+            reverse('add_comment', kwargs={'username': self.user,
+                    'post_id': self.post.id}))
         self.assertEqual(response.status_code, HTTPStatus.OK.value)
-        response = self.guest_client.get(reverse('add_comment', 
-                                                       kwargs={'username': self.user,
-                                                               'post_id': self.post.id}))
+        response = self.guest_client.get(
+            reverse('add_comment', kwargs={'username': self.user,
+                    'post_id': self.post.id}))
         self.assertEqual(response.status_code, HTTPStatus.FOUND.value)
-
-
-
-
-
 
 
 class PaginatorViewsTest(TestCase):

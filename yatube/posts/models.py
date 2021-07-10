@@ -49,11 +49,11 @@ class Comment(models.Model):
                                verbose_name='Автор комментария')
     text = models.TextField(verbose_name='Текст комментария')
     created = models.DateTimeField(auto_now_add=True,
-                                    verbose_name='Дата публикации',
-                                    help_text=('Здесь указывается '
-                                               'дата публикации записи',),
-                                    db_index=True
-                                    )
+                                   verbose_name='Дата публикации',
+                                   help_text=('Здесь указывается '
+                                              'дата публикации записи',),
+                                   db_index=True)
+
 
 class Follow(models.Model):
     user = models.ForeignKey(User, related_name='follower',
@@ -61,7 +61,7 @@ class Follow(models.Model):
                              help_text='Пользователь, который подписывается')
     author = models.ForeignKey(User, related_name='following',
                                on_delete=models.CASCADE,
-                               help_text='Пользователь, на которого подписываются')
+                               help_text='Пользователь подписываются')
 
     def __str__(self):
         return f'{self.user} подписан на {self.author}'
