@@ -190,6 +190,8 @@ class PostCreateFormTests(TestCase):
         response = self.authorized_client2.get(reverse('follow_index'))
         first_post = response.context['page'][0]
         self.assertEqual(first_post.text, self.post.text)
+
+    def test_new_post_in_feed_of_not_follow_user(self):
         response = self.authorized_client3.get(reverse('follow_index'))
         self.assertEqual(len(response.context['page']), 0)
 

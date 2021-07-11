@@ -63,5 +63,11 @@ class Follow(models.Model):
                                on_delete=models.CASCADE,
                                help_text='Пользователь подписываются')
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['follower', 'following'],
+                                    name='unique subscription')
+        ]
+
     def __str__(self):
         return f'{self.user} подписан на {self.author}'

@@ -46,10 +46,15 @@ def profile(request, username):
 
 def post_view(request, username, post_id):
     post = get_object_or_404(Post, author__username=username, pk=post_id)
-    form = CommentForm(instance=None)
+    author = get_object_or_404(User, username=username)
+    user = request.user
+    form = CommentForm()
     comments = post.comments.all()
-    return render(request, 'post.html', {'post': post,
-                                         'form': form, 'comments': comments})
+    following = user.is_authenticated and (
+        Follow.objects.filter(user=user, author=author).exists())
+    return render(request, 'post.html', {'post': post, 'author': author,
+                                         'form': form, 'comments': comments,
+                                         'following': following})
 
 
 @login_required
@@ -123,6 +128,8 @@ def profile_follow(request, username):
     user = request.user
     if author != request.user:
         Follow.objects.get_or_create(author=author, user=user)
+    else:
+        return redirect('index')
     return redirect('profile', username=username)
 
 
